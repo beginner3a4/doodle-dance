@@ -2,13 +2,15 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from fastapi import FastAPI, Request
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 import base64
 import io
 
 app = FastAPI()
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 pose = mp.solutions.pose
 
 def make_doodle(img):
@@ -29,6 +31,10 @@ def make_doodle(img):
                 cv2.circle(out, (x, y), 12, (0,255,255), -1)
                 cv2.circle(out, (x, y), 6, (255,255,255), -1)
     return out
+
+@app.get("/")
+async def index():
+    return FileResponse("static/index.html")
 
 @app.post("/predict")
 async def predict(request: Request):
