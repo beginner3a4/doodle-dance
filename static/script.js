@@ -1,30 +1,54 @@
 const v = document.getElementById('v');
 const d = document.getElementById('d');
-const btn = document.getElementById('startBtn');
+const startBtn = document.getElementById('startBtn');
 let running = false;
 
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then(s => { v.srcObject = s; });
+const c = document.createElement('canvas');
 
-async function go() {
-  if (running) return;
-  running = true;
-  d.style.display = "inline";
-  btn.disabled = true;
-  btn.textContent = "Doodle Dancing...";
-  while (running) {
-    let c = document.createElement('canvas');
-    c.width = v.videoWidth;
-    c.height = v.videoHeight;
-    c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-    let data = c.toDataURL('image/jpeg');
-    let res = await fetch('/predict', {
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => { v.srcObject = stream; })
+  .catch(err => alert('Error accessing camera: ' + err));
+
+async function runDoodle() {
+  if (!running) return;
+
+  const scale = 0.5;
+  c.width = v.videoWidth * scale;
+  c.height = v.videoHeight * scale;
+  c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+
+  const data = c.toDataURL('image/jpeg');
+  try {
+    const res = await fetch('/predict', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image: data })
     });
-    let blob = await res.blob();
+    if (!res.ok) {
+      alert('Server error: ' + res.status);
+      running = false;
+      startBtn.disabled = false;
+      startBtn.textContent = "Start Doodle Dance";
+      return;
+    }
+    const blob = await res.blob();
     d.src = URL.createObjectURL(blob);
-    await new Promise(r => setTimeout(r, 60));
+    d.style.display = 'inline';
+  } catch (err) {
+    alert('Fetch error: ' + err);
+    running = false;
+    startBtn.disabled = false;
+    startBtn.textContent = "Start Doodle Dance";
+    return;
   }
+
+  requestAnimationFrame(runDoodle);
 }
+
+startBtn.addEventListener('click', () => {
+  if (running) return;
+  running = true;
+  startBtn.disabled = true;
+  startBtn.textContent = "Doodle Dancing...";
+  runDoodle();
+});
