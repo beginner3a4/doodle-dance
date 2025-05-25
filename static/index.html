@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doodle Dance</title>
+  <meta name="viewport" content="width=900">
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526 0%, #6a82fb 100%);
+      color: #222;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #fff;
+      color: #4f4f4f;
+      padding: 28px 0 12px 0;
+      text-align: center;
+      font-size: 2.2em;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 12px #0001;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    .subtitle {
+      color: #6a82fb;
+      font-size: 1.1em;
+      margin-top: 8px;
+      margin-bottom: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 8px #fff4;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin: 40px auto 0 auto;
+      max-width: 900px;
+      width: 100%;
+    }
+    .video-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 400px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #0002;
+      padding: 24px 18px 18px 18px;
+      margin-bottom: 20px;
+    }
+    video, img {
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #6a82fb44;
+      border: 2px solid #e0e0e0;
+      background: #f5f7fa;
+      width: 360px;
+      height: 270px;
+      object-fit: cover;
+      margin-bottom: 12px;
+      margin-top: 6px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 12px 32px;
+      font-size: 1.1em;
+      background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #6a82fb33;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #fc5c7d 0%, #6a82fb 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px #fc5c7d33;
+    }
+    .label {
+      margin-bottom: 6px;
+      font-size: 1.1em;
+      color: #6a82fb;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 8px #fff;
+    }
+    footer {
+      margin-top: auto;
+      background: #fff;
+      color: #6a82fb;
+      text-align: center;
+      padding: 18px 0 10px 0;
+      font-size: 1.1em;
+      letter-spacing: 1px;
+      box-shadow: 0 -2px 12px #0001;
+      border-top: 2px solid #e0e0e0;
+    }
+    .footer-note {
+      color: #4f4f4f;
+      font-size: 0.95em;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      .video-block {
+        width: 95vw;
+        max-width: 400px;
+      }
+      video, img {
+        width: 95vw;
+        max-width: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🕺 Doodle Dance
+    <div class="subtitle">A fun AI project by <b>Bhushan</b></div>
+  </header>
+  <div class="container">
+    <div class="video-block">
+      <div class="label">Live Video</div>
+      <video id="v" width="360" height="270" autoplay></video>
+    </div>
+    <div class="video-block">
+      <div class="label">Doodle Output</div>
+      <img id="d" width="360" height="270" style="display:none;">
+      <button onclick="go()" id="startBtn">Start Doodle Dance</button>
+    </div>
+  </div>
+  <footer>
+    &copy; 2025 Bhushan &mdash; Doodle Dance Project
+    <div class="footer-note">
+      Made for fun and learning &bull; Enjoy dancing in the dark!
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
